@@ -1,0 +1,1 @@
+https://microcontrollerslab.com/hc-sr505-pir-motion-sensor-module/
