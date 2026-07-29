@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <../include/pinout.h>
+#include <../include/displayControl.h>
 
 // put function declarations here:
 int myFunction(int, int);
