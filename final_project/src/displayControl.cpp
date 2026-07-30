@@ -1,10 +1,11 @@
-#include <../include/displayControl.h>
+#include <displayControl.h>
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void displayInit() {
     Wire.begin(21, 22);
     if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
+        Serial.println(F("SSD1306 allocation failed"));
         for(;;);
     }
 }
@@ -16,6 +17,7 @@ void displayString(String dispStr) {
     display.setCursor(0, 0);
     display.println(dispStr);
     display.display();
+    //display.setTextSize(1); if needed to reset back to normal size
 }
 
 void displayLines(const String& line1,
