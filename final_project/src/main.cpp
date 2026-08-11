@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <Adafruit_AHTX0.h>
 #include <pinout.h>
 #include <displayControl.h>
+#include <DHT20.h>
 
 
 //BLE libraries
