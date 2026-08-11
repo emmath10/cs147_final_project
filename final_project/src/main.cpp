@@ -37,7 +37,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 };
 
 //initialize the temp/hum sensor
-Adafruit_AHTX0 dht20;
+DHT20 dht20(&Wire);
 
 //app state
 enum ScreenState {
@@ -86,7 +86,7 @@ void setup() {
 
   //initialize DHT20 sensor
   if (!dht20.begin()) {
-    Serial.println("Failed to find AHT20 sensor");
+    Serial.println("Failed to find DHT20 sensor");
   }
 
   //initialize BLE
@@ -98,12 +98,11 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - lastSensorRead > 2000) {
-    sensors_event_t humidity, temp;
-    dht20.getEvent(&humidity, &temp);
+    float humidity = dht20.getHumidity(), temp = dht20.getTemperature();
 
-    if (currentTemp != temp.temperature || currentHum != humidity.relative_humidity) {
-      currentTemp = temp.temperature;
-      currentHum = humidity.relative_humidity;
+    if (currentHum != humidity || currentTemp != temp) {
+      currentHum = humidity;
+      currentTemp = temp;
       updateScreen();
 
       if (deviceConnected) {
