@@ -1,5 +1,5 @@
-#ifndef DISPLAY_CONTROL_H
-#define DISPLAY_CONTROL_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <Arduino.h>
 #include <SPI.h>

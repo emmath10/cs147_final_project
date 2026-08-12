@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <pinout.h>
-#include <displayControl.h>
-#include <thControl.h>
+#include <display.h>
+#include <th.h>
 #include <ble.h>
 
 //app state
