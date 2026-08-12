@@ -2,38 +2,8 @@
 #include <Wire.h>
 #include <pinout.h>
 #include <displayControl.h>
-
-
-//BLE libraries
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
-#include <BLE2902.h>
-
-//BLE UUIDs
-#define SERVICE_UUID    "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define TEMP_CHAR_UUID  "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define HUM_CHAR_UUID   "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define WATER_CHAR_UUID "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define SLEEP_CHAR_UUID "19b10000-e8f2-537e-4f6c-d104768a1214"
-
-BLEServer* pServer = NULL;
-BLECharacteristic* pTempChar = NULL;
-BLECharacteristic* pHumChar = NULL;
-BLECharacteristic* pWaterChar = NULL;
-BLECharacteristic* pSleepChar = NULL;
-bool deviceConnected = false;
-
-//BLE callbacks
-class MyServerCallbacks: public BLEServerCallbacks {
-    void onConnect(BLEServer* pServer) {
-      deviceConnected = true;
-    };
-
-    void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
-    }
-};
+#include <thControl.h>
+#include <ble.h>
 
 //app state
 enum ScreenState {
@@ -58,7 +28,6 @@ const int debounceDelay = 250;
 
 //func declarations
 void updateScreen();
-void initBLE();
 
 void setup() {
   Serial.begin(115200);
@@ -172,37 +141,4 @@ void updateScreen() {
     String l4 = "Right Btn -> Exit";
     displayLines(l1, l2, l3, l4);
   }
-}
-
-//BLE initialization
-void initBLE() {
-  BLEDevice::init("Wellness Clock");
-  pServer = BLEDevice::createServer();
-  pServer->setCallbacks(new MyServerCallbacks());
-
-  BLEService *pService = pServer->createService(SERVICE_UUID);
-  pTempChar = pService->createCharacteristic(TEMP_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pHumChar = pService->createCharacteristic(HUM_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pWaterChar = pService->createCharacteristic(WATER_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pSleepChar = pService->createCharacteristic(SLEEP_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-
-  pTempChar->addDescriptor(new BLE2902());
-  pHumChar->addDescriptor(new BLE2902());
-  pWaterChar->addDescriptor(new BLE2902());
-  pSleepChar->addDescriptor(new BLE2902());
-
-  //broadcast initial data
-  pTempChar->setValue("0,0");
-  pHumChar->setValue("0,0");
-  pWaterChar->setValue(String(waterCount).c_str());
-  pSleepChar->setValue(String(sleepMovementCount).c_str());
-
-  pService->start();
-
-  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
-  pAdvertising->addServiceUUID(SERVICE_UUID);
-  pAdvertising->setScanResponse(true);
-  pAdvertising->setMinPreferred(0x06);
-  pAdvertising->setMinPreferred(0x12);
-  BLEDevice::startAdvertising();
 }
