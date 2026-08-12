@@ -1,57 +1,34 @@
 #include <../include/thControl.h>
 
+//temp/hum sensor object
+DHT20 dht20(&Wire);
+
 void thInit() {
+  //initialize DHT20 sensor
   Wire.begin();
-  writeToTH(0x71);
-  if ((readByteFromTH() & 0x18) != 0x18) {
-    Serial.println("TH Initialization Failed");
-    while(1) {};
+  if (!dht20.begin()) {
+    Serial.println("Failed to find DHT20 sensor");
   }
 }
 
-void writeToTH(uint8_t msg) {
-  Wire.beginTransmission(TH_ADDR);
-  Wire.write(msg);
-  Wire.endTransmission();
-}
+void readTH(unsigned long currentMillis) {
+  if (currentMillis - lastSensorRead > 2000) {
+    float humidity = dht20.getHumidity(), temp = dht20.getTemperature();
 
-uint8_t readByteFromTH() {
-  Wire.requestFrom(TH_ADDR, 1);
-  return Wire.read();
-}
+    if (currentHum != humidity || currentTemp != temp) {
+      currentHum = humidity;
+      currentTemp = temp;
+      //updateScreen();
 
-void readFromTH(uint8_t * data) {
-  Serial.println("Reading...");
-  Serial.println();
-  delay(10);
-  writeToTH(0xAC);
-  writeToTH(0x33);
-  writeToTH(0x00);
-  
-  delay(80);
-  while(1) {
-    if (!(readByteFromTH() >> 7)) { break; }
+      /*if (deviceConnected) {
+        pTempChar->setValue(String(currentTemp, 1).c_str());
+        pTempChar->notify();
+        pHumChar->setValue(String(currentHum, 1).c_str());
+        pHumChar->notify();
+      }*/
+    }
+      lastSensorRead = currentMillis;
   }
-  uint8_t data[6];
-  for (int i = 0; i < 6; i++) {
-    data[i] = readByteFromTH();
-  }
-}
-
-uint8_t calcHumidity(uint8_t * data) {
-  //takes a buffer of temp/hum data and runs the humidiity calculation
-  uint32_t sRH = data[0] << 12;
-  sRH = sRH | (data[1] << 4);
-  sRH = sRH | (data[2] >> 4);
-  return (sRH / (2 ^ 20)) * 100;
-}
-
-uint8_t calcTemp(uint8_t * data) {
-  //takes a buffer of temp/hum data and runs the temperature calculation
-  uint32_t sT = data[0] << 12;
-  sT = sT | (data[1] << 4);
-  sT = sT | (data[2] >> 4);
-  return (sT / (2^20)) * 200 - 50;
 }
 
 void printTHData(uint8_t temp, uint8_t humidity) {
@@ -63,21 +40,3 @@ void printTHData(uint8_t temp, uint8_t humidity) {
   Serial.println("%");
   Serial.println("---------------------");
 }
-
-
-
-/*
-void setup() {
-  thInit();
-  Serial.begin(9600);
-  I2CScan();
-}
-
-void loop() {
-  uint8_t data[6];
-  readFromTH(data);
-  printTHData(calcTemp(data), calcHumidity(data));
-  delay(1000);
-}
-*/
-

@@ -2,7 +2,6 @@
 #include <Wire.h>
 #include <pinout.h>
 #include <displayControl.h>
-#include <DHT20.h>
 
 
 //BLE libraries
@@ -36,9 +35,6 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
-//initialize the temp/hum sensor
-DHT20 dht20(&Wire);
-
 //app state
 enum ScreenState {
   SCREEN_DEFAULT,
@@ -50,11 +46,8 @@ bool isSleeping = false;
 //tracking vars
 int waterCount = 0;
 int sleepMovementCount = 0;
-float currentTemp = 0.0;
-float currentHum = 0.0;
 
 //timer for non-blocking code
-unsigned long lastSensorRead = 0;
 unsigned long lastPirTrigger = 0;
 
 //debounce vars
@@ -84,11 +77,6 @@ void setup() {
   displayInit();
   displayString("Wellness\nClock\nStarting...");
 
-  //initialize DHT20 sensor
-  if (!dht20.begin()) {
-    Serial.println("Failed to find DHT20 sensor");
-  }
-
   //initialize BLE
   initBLE();
   delay(1000);
@@ -97,23 +85,6 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - lastSensorRead > 2000) {
-    float humidity = dht20.getHumidity(), temp = dht20.getTemperature();
-
-    if (currentHum != humidity || currentTemp != temp) {
-      currentHum = humidity;
-      currentTemp = temp;
-      updateScreen();
-
-      if (deviceConnected) {
-        pTempChar->setValue(String(currentTemp, 1).c_str());
-        pTempChar->notify();
-        pHumChar->setValue(String(currentHum, 1).c_str());
-        pHumChar->notify();
-      }
-    }
-      lastSensorRead = currentMillis;
-  }
   if (digitalRead(PIR) == HIGH) {
     if (currentMillis - lastPirTrigger > 3000) {
       if (isSleeping) {

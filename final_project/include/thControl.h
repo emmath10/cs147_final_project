@@ -1,11 +1,19 @@
+#ifndef TH_H
+#define TH_H
+
 #include <Arduino.h>
 #include <Wire.h>
-#include <pinout.h>
+#include <DHT20.h>
+
+//tracking vars
+float currentTemp = 0.0;
+float currentHum = 0.0;
+
+//timer for non-blocking code
+unsigned long lastSensorRead = 0;
 
 void thInit();
-void writeToTH(uint8_t msg);
-uint8_t readByteFromTH();
-void readFromTH(uint8_t * data);
-uint8_t calcHumidity(uint8_t * data);
-uint8_t calcTemp(uint8_t * data);
+void readTH(unsigned long currentMillis);
 void printTHData(uint8_t temp, uint8_t humidity);
+
+#endif
