@@ -1,9 +1,4 @@
-#include <Arduino.h>
-#include <Wire.h>
-#include <pinout.h>
-#include <display.h>
-#include <th.h>
-#include <ble.h>
+#include <common.h>
 
 //app state
 enum ScreenState {

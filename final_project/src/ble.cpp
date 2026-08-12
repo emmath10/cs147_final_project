@@ -1,4 +1,4 @@
-#include <../include/ble.h>
+#include <ble.h>
 
 //BLE callbacks
 class MyServerCallbacks: public BLEServerCallbacks {

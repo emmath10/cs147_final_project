@@ -1,4 +1,4 @@
-#include <../include/thControl.h>
+#include <th.h>
 
 //temp/hum sensor object
 DHT20 dht20(&Wire);
