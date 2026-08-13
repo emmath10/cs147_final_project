@@ -3,10 +3,11 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include <pinout.h>
 #include <display.h>
-#include <th.h>
-#include <ble.h>
 
+#include <pinout.h>
+#include <pir.h>
+#include <th.h>
+//#include <ble.h>
 
 #endif
