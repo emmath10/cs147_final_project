@@ -5,15 +5,54 @@
 #include <Wire.h>
 #include <DHT20.h>
 
-//tracking vars
-float currentTemp = 0.0;
-float currentHum = 0.0;
+// temp/hum sensor object
+DHT20 dht20;
 
-//timer for non-blocking code
-unsigned long lastSensorRead = 0;
+// tracking vars
+float curr_hum = 0.0;
+float curr_temp = 0.0;
 
-void thInit();
-void readTH(unsigned long currentMillis);
-void printTHData(uint8_t temp, uint8_t humidity);
+inline bool th_init() {
+  // initialize DHT20 sensor
+  Wire.begin();
+  if (!dht20.begin()) {
+    Serial.println("Failed to find DHT20 sensor");
+    return false;
+  }
+  return true;
+}
+
+inline bool th_read() {
+  if (millis() - dht20.lastRead() > 2000) {
+    dht20.read();
+    float hum = dht20.getHumidity();
+    float temp = dht20.getTemperature();
+
+    if (curr_hum != hum || curr_temp != temp) {
+      curr_hum = hum;
+      curr_temp = temp;
+      // updateScreen();
+
+      /*if (deviceConnected) {
+        pTempChar->setValue(String(currentTemp, 1).c_str());
+        pTempChar->notify();
+        pHumChar->setValue(String(currentHum, 1).c_str());
+        pHumChar->notify();
+      }*/
+    }
+    return true;
+  }
+  return false;
+}
+
+void th_print() {
+  Serial.print("Temperature: ");
+  Serial.print(curr_temp, 1);
+  Serial.println("°");
+  Serial.print("Humidity: ");
+  Serial.print(curr_hum, 1);
+  Serial.println("%");
+  Serial.println("---------------------");
+}
 
 #endif
