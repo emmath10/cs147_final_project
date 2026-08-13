@@ -12,7 +12,7 @@ void displayInit() {
 
 void displayString(String dispStr) {
     displayClear();
-    display.setTextSize(2);
+    display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
     display.println(dispStr);

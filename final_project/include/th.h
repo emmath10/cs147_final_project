@@ -31,7 +31,6 @@ inline bool th_read() {
     if (curr_hum != hum || curr_temp != temp) {
       curr_hum = hum;
       curr_temp = temp;
-      // updateScreen();
 
       /*if (deviceConnected) {
         pTempChar->setValue(String(currentTemp, 1).c_str());

@@ -5,9 +5,10 @@
 #include <Wire.h>
 #include <display.h>
 
+// #include <ble.h>
 #include <pinout.h>
 #include <pir.h>
+#include <screen.h>
 #include <th.h>
-//#include <ble.h>
 
 #endif
