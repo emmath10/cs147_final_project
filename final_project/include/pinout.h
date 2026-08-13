@@ -8,13 +8,13 @@
 #define OLED_ADDR       0x3C
 
 //GPIO
-#define PIR             19
-#define BUZZER          18
+#define PIR             23
+#define BUZZER          1
+#define BUTTON_RIGHT    19
+#define BUTTON_MIDDLE   18
 #define BUTTON_LEFT     5
-#define BUTTON_RIGHT    17
-#define BUTTON_MIDDLE   16
+#define LED_RIGHT       17
+#define LED_MIDDLE      16
 #define LED_LEFT        4
-#define LED_MIDDLE      2
-#define LED_RIGHT       15
 
 #endif
