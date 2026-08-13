@@ -15,9 +15,9 @@ ScreenState currentScreen = SCREEN_DEFAULT;
 int water_ct = 0;
 
 // debounce vars
-unsigned long lastLeftBtn = 0;
-unsigned long lastMiddleBtn = 0;
-unsigned long lastRightBtn = 0;
+unsigned long last_btn_r = 0;
+unsigned long last_btn_m = 0;
+unsigned long last_btn_l = 0;
 #define DEBOUNCE_DELAY 250
 
 inline void updateScreen() {
@@ -37,11 +37,35 @@ inline void updateScreen() {
   }
 }
 
+inline bool drink_water() {
+  // middle button: water drinking count
+  if (!digitalRead(BTN_R) && (millis() - last_btn_r > DEBOUNCE_DELAY)) {
+    while (!digitalRead(BTN_R)) {}
+    water_ct++;
+    digitalWrite(LED_R, HIGH);
+    tone(BUZZER, 2048, 500);
+    delay(1000);
+    digitalWrite(LED_R, LOW);
+    updateScreen();
+
+    /*if (deviceConnected) {
+      pWaterChar->setValue(String(waterCount).c_str());
+      pWaterChar->notify();
+    }*/
+    last_btn_r = millis();
+    return true;
+  }
+  return false;
+}
+
+
 inline bool toggle_sleep_mode() {
   // left button: sleep mode toggle
-  if (!digitalRead(BUTTON_LEFT) && (millis() - lastLeftBtn > DEBOUNCE_DELAY)) {
+  if (!digitalRead(BTN_L) && (millis() - last_btn_l > DEBOUNCE_DELAY)) {
+    while (!digitalRead(BTN_L)) {
+    }
     is_sleeping = !is_sleeping;
-    digitalWrite(LED_LEFT, is_sleeping);
+    digitalWrite(LED_L, is_sleeping);
 
     if (is_sleeping) {
       sleep_movement_ct = 0;
@@ -57,7 +81,7 @@ inline bool toggle_sleep_mode() {
       delay(1500);
     }
 
-    lastLeftBtn = millis();
+    last_btn_l = millis();
     return true;
   }
 
