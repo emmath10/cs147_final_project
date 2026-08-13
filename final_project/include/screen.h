@@ -9,7 +9,7 @@ enum ScreenState {
   SCREEN_DEFAULT,
   SCREEN_ALARM
 };
-ScreenState currentScreen = SCREEN_DEFAULT;
+ScreenState curr_screen = SCREEN_DEFAULT;
 
 // tracking vars
 int water_ct = 0;
@@ -21,25 +21,26 @@ unsigned long last_btn_l = 0;
 #define DEBOUNCE_DELAY 250
 
 inline void updateScreen() {
-  if (currentScreen == SCREEN_DEFAULT) {
-    String l1 = "Temp: " + String(curr_temp, 1) + "C H:" + String(curr_hum, 1) + "%";
+  if (curr_screen == SCREEN_DEFAULT) {
+    String l1 = "Temp: " + String(curr_temp, 1) +
+                "C H:" + String(curr_hum, 1) + "%";
     String l2 = "Water: " + String(water_ct);
     String l3 = is_sleeping ? "Status: SLEEPING" : "Status: AWAKE";
     String l4 = is_sleeping ? "Moves: " + String(sleep_movement_ct) : "";
     displayLines(l1, l2, l3, l4);
-  }
-  else if (currentScreen == SCREEN_ALARM) {
+  } else if (curr_screen == SCREEN_ALARM) {
     String l1 = "  ALARM  ";
     String l2 = "Wake: 07:00 AM";
     String l3 = "Drink: Every 2H";
-    String l4 = "Right Btn -> Exit";
+    String l4 = "Middle Btn -> Exit";
     displayLines(l1, l2, l3, l4);
   }
 }
 
 inline bool drink_water() {
-  // middle button: water drinking count
-  if (!digitalRead(BTN_R) && (millis() - last_btn_r > DEBOUNCE_DELAY)) {
+  // right button: water drinking count
+  if (!digitalRead(BTN_R) &&
+      (millis() - last_btn_r > DEBOUNCE_DELAY)) {
     while (!digitalRead(BTN_R)) {}
     water_ct++;
     digitalWrite(LED_R, HIGH);
@@ -58,12 +59,32 @@ inline bool drink_water() {
   return false;
 }
 
+inline bool toggle_UI_screen() {
+  // middle button: toggle UI screen
+  if (digitalRead(BTN_M) == LOW &&
+      (millis() - last_btn_r > DEBOUNCE_DELAY)) {
+    while(!digitalRead(BTN_M)) {}
+    digitalWrite(LED_M, HIGH);
+    if (curr_screen == SCREEN_DEFAULT) {
+      curr_screen = SCREEN_ALARM;
+    } else {
+      curr_screen = SCREEN_DEFAULT;
+    }
+    delay(1000);
+    digitalWrite(LED_M, LOW);
+
+    last_btn_m = millis();
+    return true;
+  }
+  return false;
+}
+
 
 inline bool toggle_sleep_mode() {
   // left button: sleep mode toggle
-  if (!digitalRead(BTN_L) && (millis() - last_btn_l > DEBOUNCE_DELAY)) {
-    while (!digitalRead(BTN_L)) {
-    }
+  if (!digitalRead(BTN_L) &&
+      (millis() - last_btn_l > DEBOUNCE_DELAY)) {
+    while (!digitalRead(BTN_L)) {}
     is_sleeping = !is_sleeping;
     digitalWrite(LED_L, is_sleeping);
 

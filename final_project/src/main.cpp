@@ -25,23 +25,8 @@ void setup() {
 }
 
 void loop() {
-  if (th_read() || toggle_sleep_mode() || drink_water()) {
+  if (th_read() || toggle_sleep_mode() ||
+      toggle_UI_screen() || drink_water()) {
     updateScreen();
   }
-  /*
-  
-  
-  }
-  
-  //right button: toggle UI screen
-  if (digitalRead(BUTTON_RIGHT) == LOW && (currentMillis - lastRightBtn > debounceDelay)) {
-    if (currentScreen == SCREEN_DEFAULT) {
-      currentScreen = SCREEN_ALARM;
-    } else {
-      currentScreen = SCREEN_DEFAULT;
-    }
-
-    lastRightBtn = currentMillis;
-    updateScreen();
-  }*/
 }
