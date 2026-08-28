@@ -1,7 +1,7 @@
 INFORMATION ABOUT THE WELLNESS CLOCK
 
-There are four different screens:
-1) Starting, 2) Sleep, 3) Alarm, 4) Water Alert
+This Wellness Clock aims to tell the time and check show the user data from the around them. The temperature, humidity, and how much they move in their sleep.
+There are four different screens: **1) Starting, 2) Sleep, 3) Alarm, 4) Water Alert**
 
 **You can add to your water count regardless of the screen you're on**
 
@@ -29,7 +29,7 @@ Drink: Every 2H<br>
 HELP: tinyurl.com/WellnessClock<br>
 Middle BTN -> Exit
 
-4) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal.
+4) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal. Buzzer goes off when this screen pops up, and also when you add to your water count.
 
 **Water Screen**<br>
 DRINK WATER<br>
