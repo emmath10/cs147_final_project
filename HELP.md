@@ -8,15 +8,15 @@ There are four different screens:
 1) Start: When you boot up the clock, it will start with Wellness Clock Loading... and then show the Starting screen. From the starting screen, you can access your Sleep (Red button) and Alarm (Yellow button) screens.
 
 **Starting Screen**<br>
-Time: 07:00AM&nbsp;&nbsp;Temp: 50.0C<br>
-Water: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hum: 50.0%<br>
+Time: 07:00AM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temp: 50.0C<br>
+Water: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hum: 50.0%<br>
 Status: AWAKE
 
 2) Sleep: This screen can be accessed by pressing the Red button from the Starting screen, and to exit it, press it again. There will be a brief Sleep Mode ON screen to transition from Starting to Sleep.
    
 **Sleep Screen**<br>
-Time: 11:00PM&nbsp;&nbsp;Temp: 50.0C<br>
-Water: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hum: 50.0%<br>
+Time: 11:00PM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temp: 50.0C<br>
+Water: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hum: 50.0%<br>
 Status: SLEEPING<br>
 Moves: 0
 
