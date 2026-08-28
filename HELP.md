@@ -5,7 +5,7 @@ There are four different screens: **1) Starting, 2) Sleep, 3) Alarm, 4) Water Al
 
 **You can add to your water count regardless of the screen you're on**
 
-1) Start: When you boot up the clock, it will start with Wellness Clock Loading... and then show the Starting screen. From the starting screen, you can access your Sleep (Red button) and Alarm (Yellow button) screens.
+1) Start: When you boot up the clock, it will start with Wellness Clock Starting... and then show the Starting screen. From the starting screen, you can access your Sleep (Red button) and Alarm (Yellow button) screens.
 
 **Starting Screen**<br>
 Time: 07:00AM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temp: 50.0C<br>
