@@ -17,10 +17,10 @@ class MyCallbacks : public BLECharacteristicCallbacks {
     size_t len = pCharacteristic->getLength();
 
     //efficiently copies the value received into a buffer
-    if (len > 0 && len < sizeof(curr_data.bleBuffer)) {
-      memcpy(curr_data.bleBuffer, pData, len);
-      curr_data.bleBuffer[len] = '\0';
-      curr_data.bleNewData = true;
+    if (len > 0 && len < sizeof(data.bleBuffer)) {
+      memcpy(data.bleBuffer, pData, len);
+      data.bleBuffer[len] = '\0';
+      data.bleNewData = true;
       tone(BUZZER, 2048, 1000);
     }
   }

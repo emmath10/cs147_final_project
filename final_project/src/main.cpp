@@ -9,7 +9,7 @@
 
 long wakeupCooldown, waterCooldown;
 
-Data curr_data;
+Data data;
 
 void setup() {
   Serial.begin(115200);
@@ -45,12 +45,12 @@ void setup() {
   wifiInit();
 
   //initialize and get the time from NTP
-  initTime(&curr_data);
+  initTime(&data);
 
   delay(1000);
 
   //start displaying screen
-  updateScreen(&curr_data);
+  updateScreen(&data);
 
   //turn off actuators to signal end of setup
   digitalWrite(LED_R, LOW);
@@ -61,27 +61,27 @@ void setup() {
 
 void loop() {
   //alarms
-  triggerWakeupAlarm(&curr_data, &wakeupCooldown);
-  triggerWaterAlarm(&curr_data, &waterCooldown);
+  triggerWakeupAlarm(&data, &wakeupCooldown);
+  triggerWaterAlarm(&data, &waterCooldown);
 
   //sensors
-  pir_read(&curr_data);
-  th_read(&curr_data);
+  pir_read(&data);
+  th_read(&data);
 
   //button presses
-  toggle_sleep_mode(&curr_data);
+  toggle_sleep_mode(&data);
   toggle_UI_screen();
-  drink_water(&curr_data);
+  drink_water(&data);
 
-  updateScreen(&curr_data);
+  updateScreen(&data);
 
   //communication protocols
-  sendTelemetry(&curr_data);
+  sendTelemetry(&data);
 
   //parse command from phone if ESP32 received valid data
-  if (curr_data.bleNewData) {
-    curr_data.bleNewData = false;
-    printValue(std::string(curr_data.bleBuffer));
-    toggleCMD(std::string(curr_data.bleBuffer), &curr_data);
+  if (data.bleNewData) {
+    data.bleNewData = false;
+    printValue(std::string(data.bleBuffer));
+    toggleCMD(std::string(data.bleBuffer), &data);
   }
 }

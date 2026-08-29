@@ -30,6 +30,6 @@ struct Data {
   }
 };
 
-extern Data curr_data;
+extern Data data;
 
 #endif
