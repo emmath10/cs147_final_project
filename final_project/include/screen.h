@@ -1,7 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "alarm.h"
 #include "data.h"
 #include "display.h"
 #include "pinout.h"
