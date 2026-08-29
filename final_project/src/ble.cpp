@@ -1,7 +1,5 @@
 #include "ble.h"
 
-bool deviceConnected = false;
-
 void printValue(std::string value) {
   // prints the value received from the BLE device to the Serial monitor
   Serial.println("*********");
