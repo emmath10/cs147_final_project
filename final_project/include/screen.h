@@ -1,112 +1,34 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include <common.h>
-#include <th.h>
+#include "alarm.h"
+#include "data.h"
+#include "display.h"
+#include "pinout.h"
+#include "realTime.h"
+#include "sensors.h"
+#include <algorithm>
+#include <cctype>
+#include <string>
+
+#define DEBOUNCE_DELAY 250
+
+#define TIME_BEFORE_SNOOZE 1000 * 60
+#define RING_INTERVAL 2000
 
 //app state
 enum ScreenState {
   SCREEN_DEFAULT,
   SCREEN_ALARM
 };
-ScreenState curr_screen = SCREEN_DEFAULT;
 
-// tracking vars
-int water_ct = 0;
-
-// debounce vars
-unsigned long last_btn_r = 0;
-unsigned long last_btn_m = 0;
-unsigned long last_btn_l = 0;
-#define DEBOUNCE_DELAY 250
-
-inline void updateScreen() {
-  if (curr_screen == SCREEN_DEFAULT) {
-    String l1 = "Temp: " + String(curr_temp, 1) +
-                "C H:" + String(curr_hum, 1) + "%";
-    String l2 = "Water: " + String(water_ct);
-    String l3 = is_sleeping ? "Status: SLEEPING" : "Status: AWAKE";
-    String l4 = is_sleeping ? "Moves: " + String(sleep_movement_ct) : "";
-    displayLines(l1, l2, l3, l4);
-  } else if (curr_screen == SCREEN_ALARM) {
-    String l1 = "  ALARM  ";
-    String l2 = "Wake: 07:00 AM";
-    String l3 = "Drink: Every 2H";
-    String l4 = "Middle Btn -> Exit";
-    displayLines(l1, l2, l3, l4);
-  }
-}
-
-inline bool drink_water() {
-  // right button: water drinking count
-  if (!digitalRead(BTN_R) &&
-      (millis() - last_btn_r > DEBOUNCE_DELAY)) {
-    while (!digitalRead(BTN_R)) {}
-    water_ct++;
-    digitalWrite(LED_R, HIGH);
-    tone(BUZZER, 2048, 500);
-    delay(1000);
-    digitalWrite(LED_R, LOW);
-    updateScreen();
-
-    /*if (deviceConnected) {
-      pWaterChar->setValue(String(waterCount).c_str());
-      pWaterChar->notify();
-    }*/
-    last_btn_r = millis();
-    return true;
-  }
-  return false;
-}
-
-inline bool toggle_UI_screen() {
-  // middle button: toggle UI screen
-  if (digitalRead(BTN_M) == LOW &&
-      (millis() - last_btn_r > DEBOUNCE_DELAY)) {
-    while(!digitalRead(BTN_M)) {}
-    digitalWrite(LED_M, HIGH);
-    if (curr_screen == SCREEN_DEFAULT) {
-      curr_screen = SCREEN_ALARM;
-    } else {
-      curr_screen = SCREEN_DEFAULT;
-    }
-    delay(1000);
-    digitalWrite(LED_M, LOW);
-
-    last_btn_m = millis();
-    return true;
-  }
-  return false;
-}
-
-
-inline bool toggle_sleep_mode() {
-  // left button: sleep mode toggle
-  if (!digitalRead(BTN_L) &&
-      (millis() - last_btn_l > DEBOUNCE_DELAY)) {
-    while (!digitalRead(BTN_L)) {}
-    is_sleeping = !is_sleeping;
-    digitalWrite(LED_L, is_sleeping);
-
-    if (is_sleeping) {
-      sleep_movement_ct = 0;
-      displayString("Sleep Mode ON");
-
-      /*if (deviceConnected) {
-        pSleepChar->setValue(String(sleepMovementCount).c_str());
-        pSleepChar->notify();
-      }*/
-      delay(1500);
-    } else {
-      displayString("Sleep Mode OFF");
-      delay(1500);
-    }
-
-    last_btn_l = millis();
-    return true;
-  }
-
-  return false;
-}
+void updateScreen(Data *data);
+bool drink_water(Data *data);
+bool toggle_UI_screen();
+bool toggle_sleep_mode(Data *data);
+void toggleCMD(std::string value, Data *data);
+bool ringAlarm(Data *data);
+void triggerWakeupAlarm(Data *data, long *wakeupCooldown);
+void triggerWaterAlarm(Data *data, long *waterCooldown);
 
 #endif
