@@ -5,15 +5,15 @@
 
 struct Data {
   //temperature/humidity sensor data
-  float curr_hum = 0.0;
-  float curr_temp = 0.0;
+  float currHum = 0.0;
+  float currTemp = 0.0;
 
   //sleep movement data
-  int sleep_movement_ct = 0;
-  bool is_sleeping = false;
+  int sleepMovementCt = 0;
+  bool isSleeping = false;
 
   //hydration data
-  int water_ct = 0;
+  int waterCt = 0;
 
   //alarms
   tm wakeupAlarm; //stores the time when the wakeup alarm triggers
@@ -33,7 +33,7 @@ struct Data {
     }
     if (timeinfo.tm_hour == 0 && timeinfo.tm_min == 0 &&
         timeinfo.tm_sec == 0) {
-          water_ct = 0;
+          waterCt = 0;
         }
   }
 };
