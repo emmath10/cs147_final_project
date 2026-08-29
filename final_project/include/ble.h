@@ -1,7 +1,9 @@
 #ifndef BLE_H
 #define BLE_H
 
+#include "data.h"
 #include "esp_bt.h" //used in main.cpp to optimize BLE
+#include "pinout.h"
 #include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEServer.h>
