@@ -1,45 +1,42 @@
-#include <ble.h>
+#include "ble.h"
 
-//BLE callbacks
-class MyServerCallbacks: public BLEServerCallbacks {
-    void onConnect(BLEServer* pServer) {
-      deviceConnected = true;
-    };
+bool deviceConnected = false;
 
-    void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
+void printValue(std::string value) {
+  // prints the value received from the BLE device to the Serial monitor
+  Serial.println("*********");
+  Serial.print("New value: ");
+  for (int i = 0; i < value.length(); i++)
+    Serial.print(value[i]);
+  Serial.println();
+  Serial.println("*********");
+}
+
+// BLE callbacks
+class MyCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) override {
+    uint8_t *pData = pCharacteristic->getData();
+    size_t len = pCharacteristic->getLength();
+
+    if (len > 0 && len < sizeof(curr_data.bleBuffer)) {
+      memcpy(curr_data.bleBuffer, pData, len);
+      curr_data.bleBuffer[len] = '\0';
+      curr_data.bleNewData = true;
+      tone(BUZZER, 2048, 1000);
     }
+  }
 };
 
-//BLE initialization
+// BLE initialization
 void initBLE() {
   BLEDevice::init("Wellness Clock");
-  pServer = BLEDevice::createServer();
-  pServer->setCallbacks(new MyServerCallbacks());
-
+  BLEServer *pServer = BLEDevice::createServer();
   BLEService *pService = pServer->createService(SERVICE_UUID);
-  pTempChar = pService->createCharacteristic(TEMP_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pHumChar = pService->createCharacteristic(HUM_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pWaterChar = pService->createCharacteristic(WATER_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  pSleepChar = pService->createCharacteristic(SLEEP_CHAR_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-
-  pTempChar->addDescriptor(new BLE2902());
-  pHumChar->addDescriptor(new BLE2902());
-  pWaterChar->addDescriptor(new BLE2902());
-  pSleepChar->addDescriptor(new BLE2902());
-
-  //broadcast initial data
-  pTempChar->setValue("0,0");
-  pHumChar->setValue("0,0");
-  pWaterChar->setValue(String(waterCount).c_str());
-  pSleepChar->setValue(String(sleepMovementCount).c_str());
-
+  BLECharacteristic *pCharacteristic = pService->createCharacteristic(
+      CHARACTERISTIC_UUID,
+      BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
+  pCharacteristic->setCallbacks(new MyCallbacks());
   pService->start();
-
-  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
-  pAdvertising->addServiceUUID(SERVICE_UUID);
-  pAdvertising->setScanResponse(true);
-  pAdvertising->setMinPreferred(0x06);
-  pAdvertising->setMinPreferred(0x12);
-  BLEDevice::startAdvertising();
+  BLEAdvertising *pAdvertising = pServer->getAdvertising();
+  pAdvertising->start();
 }

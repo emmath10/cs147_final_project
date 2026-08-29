@@ -1,26 +1,21 @@
 #ifndef BLE_H
 #define BLE_H
 
+#include "data.h"
+#include "esp_bt.h"
+#include "screen.h"
 #include <Arduino.h>
 #include <BLEDevice.h>
-#include <BLEUtils.h>
 #include <BLEServer.h>
-#include <BLE2902.h>
+#include <BLEUtils.h>
+#include <string>
 
 //BLE UUIDs
-#define SERVICE_UUID    "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define TEMP_CHAR_UUID  "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define HUM_CHAR_UUID   "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define WATER_CHAR_UUID "19b10000-e8f2-537e-4f6c-d104768a1214"
-#define SLEEP_CHAR_UUID "19b10000-e8f2-537e-4f6c-d104768a1214"
+#define SERVICE_UUID        "19b10000-e8f2-537e-4f6c-d104768a1214"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-BLEServer* pServer = NULL;
-BLECharacteristic* pTempChar = NULL;
-BLECharacteristic* pHumChar = NULL;
-BLECharacteristic* pWaterChar = NULL;
-BLECharacteristic* pSleepChar = NULL;
-bool deviceConnected = false;
 
+void printValue(std::string value);
 void initBLE();
 
 #endif
