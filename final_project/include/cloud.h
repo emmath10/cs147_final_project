@@ -2,8 +2,6 @@
 #define CLOUD_H
 
 #include "data.h"
-#include "screen.h"
-#include "sensors.h"
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
 #include <WiFiClient.h>
