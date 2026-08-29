@@ -2,22 +2,22 @@
 #include "realTime.h"
 
 // debounce vars
-unsigned long last_btn_r = 0;
-unsigned long last_btn_m = 0;
-unsigned long last_btn_l = 0;
+unsigned long lastBtnR = 0;
+unsigned long lastBtnM = 0;
+unsigned long lastBtnL = 0;
 
-ScreenState curr_screen = SCREEN_DEFAULT;
+ScreenState currScreen = SCREEN_DEFAULT;
 
 void updateScreen(Data * data) {
-  if (curr_screen == SCREEN_DEFAULT) {
+  if (currScreen == SCREEN_DEFAULT) {
     String l1 = getTime() + "\n";
-    String l2 = "Temp:" + String(data->curr_temp, 1) + "C  " +
-                "Hum:" + String(data->curr_hum, 1) + "%\n";
-    String l3 = "Water Count: " + String(data->water_ct);
-    String l4 = data->is_sleeping ? "Status: SLEEPING" : "Status: AWAKE";
-    String l5 = data->is_sleeping ? "Sleep Moves: " + String(data->sleep_movement_ct) : "";
+    String l2 = "Temp:" + String(data->currTemp, 1) + "C  " +
+                "Hum:" + String(data->currHum, 1) + "%\n";
+    String l3 = "Water Count: " + String(data->waterCt);
+    String l4 = data->isSleeping ? "Status: SLEEPING" : "Status: AWAKE";
+    String l5 = data->isSleeping ? "Sleep Moves: " + String(data->sleepMovementCt) : "";
     displayLines(l1, l2, l3, l4, l5);
-  } else if (curr_screen == SCREEN_ALARM) {
+  } else if (currScreen == SCREEN_ALARM) {
     String l1 = "       ALARM";
     String l2 = "Wake Up: " + displayAlarm(&(data->wakeupAlarm));
     String l3 = "Hydrate: Every " + String(data->waterInterval) + " Hr";
@@ -27,9 +27,9 @@ void updateScreen(Data * data) {
   }
 }
 
-bool drink_water(Data *data) {
+bool drinkWater(Data *data) {
   // right button: water drinking count
-  if (!digitalRead(BTN_R) && (millis() - last_btn_r > DEBOUNCE_DELAY)) {
+  if (!digitalRead(BTN_R) && (millis() - lastBtnR > DEBOUNCE_DELAY)) {
     while (!digitalRead(BTN_R)) {
     }
     struct tm timeinfo;
@@ -37,7 +37,7 @@ bool drink_water(Data *data) {
       Serial.println("Failed to obtain time");
       return false;
     }
-    data->water_ct++;
+    data->waterCt++;
     data->lastWater.tm_hour = timeinfo.tm_hour;
     digitalWrite(LED_R, HIGH);
     tone(BUZZER, 2048, 500);
@@ -45,44 +45,44 @@ bool drink_water(Data *data) {
     digitalWrite(LED_R, LOW);
     updateScreen(data);
 
-    last_btn_r = millis();
+    lastBtnR = millis();
     return true;
   }
   return false;
 }
 
-bool toggle_UI_screen() {
+bool toggleUIScreen() {
   // middle button: toggle UI screen
-  if (digitalRead(BTN_M) == LOW && (millis() - last_btn_r > DEBOUNCE_DELAY)) {
+  if (digitalRead(BTN_M) == LOW && (millis() - lastBtnR > DEBOUNCE_DELAY)) {
     tone(BUZZER, 2048, 1000);
     while (!digitalRead(BTN_M)) {
     }
     digitalWrite(LED_M, HIGH);
-    if (curr_screen == SCREEN_DEFAULT) {
-      curr_screen = SCREEN_ALARM;
+    if (currScreen == SCREEN_DEFAULT) {
+      currScreen = SCREEN_ALARM;
     } else {
-      curr_screen = SCREEN_DEFAULT;
+      currScreen = SCREEN_DEFAULT;
     }
     delay(1000);
     digitalWrite(LED_M, LOW);
 
-    last_btn_m = millis();
+    lastBtnM = millis();
     return true;
   }
   return false;
 }
 
-bool toggle_sleep_mode(Data * data) {
+bool toggleSleepMode(Data * data) {
   // left button: sleep mode toggle
-  if (!digitalRead(BTN_L) && (millis() - last_btn_l > DEBOUNCE_DELAY)) {
+  if (!digitalRead(BTN_L) && (millis() - lastBtnL > DEBOUNCE_DELAY)) {
     tone(BUZZER, 2048, 1000);
     while (!digitalRead(BTN_L)) {
     }
-    data->is_sleeping = !data->is_sleeping;
-    digitalWrite(LED_L, data->is_sleeping);
+    data->isSleeping = !data->isSleeping;
+    digitalWrite(LED_L, data->isSleeping);
 
-    if (data->is_sleeping) {
-      data->sleep_movement_ct = 0;
+    if (data->isSleeping) {
+      data->sleepMovementCt = 0;
       displayString("Sleep Mode ON");
       delay(1500);
     } else {
@@ -90,7 +90,7 @@ bool toggle_sleep_mode(Data * data) {
       delay(1500);
     }
 
-    last_btn_l = millis();
+    lastBtnL = millis();
     return true;
   }
 
@@ -101,13 +101,13 @@ bool toggle_sleep_mode(Data * data) {
 
 void parseCMD(std::string value, std::string * buf) {
   transform(value.begin(), value.end(), value.begin(), ::tolower);
-  size_t alarm_cmd = value.find("alarm");
-  size_t water_cmd = value.find("water");
-  if (alarm_cmd != std::string::npos) {
+  size_t alarmCmd = value.find("alarm");
+  size_t waterCmd = value.find("water");
+  if (alarmCmd != std::string::npos) {
     buf[0] = "alarm";
     buf[1] = value.substr(6, 2);
     buf[2] = value.substr(9, 2);
-  } else if (water_cmd != std::string::npos) {
+  } else if (waterCmd != std::string::npos) {
     buf[0] = "water";
     buf[1] = value[6];
   }
@@ -192,7 +192,7 @@ void triggerWaterAlarm(Data *data, long * waterCooldown) {
   if (data->lastWater.tm_hour + data->waterInterval >= timeinfo.tm_hour) {
     displayDrinkWater();
     if (ringAlarm(data)) {
-      (data->water_ct)++;
+      (data->waterCt)++;
     }
     data->lastWater.tm_hour = timeinfo.tm_hour;
     *waterCooldown = millis() + 60000;

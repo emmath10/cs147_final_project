@@ -22,9 +22,9 @@ enum ScreenState {
 };
 
 void updateScreen(Data *data);
-bool drink_water(Data *data);
-bool toggle_UI_screen();
-bool toggle_sleep_mode(Data *data);
+bool drinkWater(Data *data);
+bool toggleUIScreen();
+bool toggleSleepMode(Data *data);
 void toggleCMD(std::string value, Data *data);
 bool ringAlarm(Data *data);
 void triggerWakeupAlarm(Data *data, long *wakeupCooldown);

@@ -46,11 +46,11 @@ void createPayload(char *buffer, size_t bufferSize, Data * data) {
   //serializes collected data into a JSON payload
   ArduinoJson::JsonDocument doc;
   //doc["time"] = long(time(NULL));
-  doc["tempC"] = data->curr_temp;
-  doc["hum"] = data->curr_hum;
-  doc["isSleeping"] = data->is_sleeping;
-  doc["sleepMovementCt"] = data->sleep_movement_ct;
-  doc["water_ct"] = data->water_ct;
+  doc["tempC"] = data->currTemp;
+  doc["hum"] = data->currHum;
+  doc["isSleeping"] = data->isSleeping;
+  doc["sleepMovementCt"] = data->sleepMovementCt;
+  doc["waterCt"] = data->waterCt;
   serializeJson(doc, buffer, bufferSize);
 }
 

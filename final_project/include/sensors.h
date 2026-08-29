@@ -10,13 +10,13 @@
 
 //---------PIR Sensor---------//
 
-bool pir_read(Data *data);
+bool pirRead(Data *data);
 
 //---------Temperature/Humidity Sensor---------//
 
 
-bool th_init();
-bool th_read(Data *data);
-inline void th_print(Data *data);
+bool thInit();
+bool thRead(Data *data);
+inline void thPrint(Data *data);
 
 #endif

@@ -31,7 +31,7 @@ void setup() {
   tone(BUZZER, 2048);
 
   //initialize T/H sensor
-  th_init();
+  thInit();
   
   //initialize OLED
   displayInit();
@@ -65,13 +65,13 @@ void loop() {
   triggerWaterAlarm(&data, &waterCooldown);
 
   //sensors
-  pir_read(&data);
-  th_read(&data);
+  pirRead(&data);
+  thRead(&data);
 
   //button presses
-  toggle_sleep_mode(&data);
-  toggle_UI_screen();
-  drink_water(&data);
+  toggleSleepMode(&data);
+  toggleUIScreen();
+  drinkWater(&data);
 
   updateScreen(&data);
 
