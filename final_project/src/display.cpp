@@ -23,13 +23,16 @@ void displayString(String dispStr) {
 void displayLines(const String& line1,
                     const String& line2 = "",
                     const String& line3 = "",
-                    const String& line4 = "") {
+                    const String& line4 = "",
+                    const String& line5 = "") {
     displayClear();
+    display.setTextSize(1);
     display.setCursor(0, 0);
     display.println(line1);
     if (line2.length()) display.println(line2);
     if (line3.length()) display.println(line3);
     if (line4.length()) display.println(line4);
+    if (line5.length()) display.println(line5);
     display.display();
 }
 

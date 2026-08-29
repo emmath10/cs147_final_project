@@ -17,7 +17,8 @@ void displayString(String dispStr);
 void displayLines(const String& line1,
                     const String& line2,
                     const String& line3,
-                    const String& line4);
+                    const String& line4,
+                    const String& line5);
 void displayClear();
 void I2CScan();
 
