@@ -36,6 +36,24 @@ void displayLines(const String& line1,
     display.display();
 }
 
+void displayWakeup(const String& wakeupTime) {
+  displayClear();
+  display.setTextSize(2);
+  display.setCursor(0, 0);
+  display.println("  WAKEUP  ");
+  display.println(wakeupTime);
+  display.display();
+}
+
+void displayDrinkWater() {
+  displayClear();
+  display.setTextSize(2);
+  display.setCursor(0, 0);
+  display.println("   DRINK  ");
+  display.println("   WATER  ");
+  display.display();
+}
+
 void displayClear() {
     display.clearDisplay();
 }
