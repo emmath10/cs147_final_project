@@ -1,7 +1,7 @@
 INFORMATION ABOUT THE WELLNESS CLOCK
 
 This Wellness Clock aims to tell the time and check show the user data from the around them. The temperature, humidity, and how much they move in their sleep.
-There are four different screens: **1) Starting, 2) Sleep, 3) Alarm, 4) Water Alert**
+There are five different screens: **1) Starting, 2) Sleep, 3) Alarm Settings, 4) Actual Alarm, 5) Water Alert**
 
 **You can add to your water count regardless of the screen you're on**
 
@@ -22,16 +22,23 @@ Water Count: 0<br>
 Status: SLEEPING<br>
 Sleep Moves: 0
 ___
-3) Alarm: This screen can be accessed by pressing the Yellow button from the Starting screen, and to exit it, press it again. There is no transition screen for this one.
+3) Alarm Settings: This screen can be accessed by pressing the Yellow button from the Starting screen, and to exit it, press it again. There is no transition screen for this one.
 ___
-**Alarm Screen**<br>
+**Alarm Settings Screen**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALARM<br>
 Wake: 07:00 AM<br>
 Drink: Every 2 Hr(s)<br>
-HELP: tinyurl.com/WellnessClock<br>
+HELP: tinyurl.com/<br>
+WellnessClock<br>
 &nbsp;&nbsp;Middle BTN -> Exit
 ___
-4) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal. Buzzer goes off when this screen pops up, and also when you add to your water count.
+4) Alarm: This screen shows when your alarm goes off. Press any button to turn it off.
+___
+**Alarm Screen**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WAKEUP<br>
+07:00:00 AM
+___
+5) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal. Buzzer goes off when this screen pops up, and also when you add to your water count.
 ___
 **Water Screen**<br>
 DRINK<br>
