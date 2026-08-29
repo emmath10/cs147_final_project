@@ -23,10 +23,11 @@ void setup() {
   pinMode(LED_M, OUTPUT);
   pinMode(LED_L, OUTPUT);
 
+  //actuator feedback indicating duration of setup
   digitalWrite(LED_R, HIGH);
   digitalWrite(LED_M, HIGH);
   digitalWrite(LED_L, HIGH);
-  tone(BUZZER, 2048, 1000);
+  tone(BUZZER, 2048);
 
   //initialize T/H sensor
   th_init();
@@ -42,7 +43,7 @@ void setup() {
   //initialize WiFi
   wifiInit();
 
-  // Initialize and get the time from NTP
+  //initialize and get the time from NTP
   configTime(GMT_OFFSET_SEC, 0, NTP_SERVER);
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
@@ -53,23 +54,37 @@ void setup() {
   curr_data.waterInterval = 2;
 
   delay(1000);
+
+  //start displaying screen
   updateScreen(&curr_data);
 
+  //turn off actuators to signal end of setup
   digitalWrite(LED_R, LOW);
   digitalWrite(LED_M, LOW);       
   digitalWrite(LED_L, LOW);
+  noTone(BUZZER);
 }
 
 void loop() {
+  //alarms
   triggerWakeupAlarm(&curr_data, &wakeupCooldown);
   triggerWaterAlarm(&curr_data, &waterCooldown);
+
+  //sensors
   pir_read(&curr_data);
   th_read(&curr_data);
+
+  //button presses
   toggle_sleep_mode(&curr_data);
   toggle_UI_screen();
   drink_water(&curr_data);
+
   updateScreen(&curr_data);
+
+  //communication protocols
   sendTelemetry(&curr_data);
+
+  //parse command from phone if ESP32 received valid data
   if (curr_data.bleNewData) {
     curr_data.bleNewData = false;
     printValue(std::string(curr_data.bleBuffer));
