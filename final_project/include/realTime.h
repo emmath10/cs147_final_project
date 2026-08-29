@@ -19,6 +19,7 @@ inline bool initTime(Data *data) {
   data->lastWater.tm_hour = timeinfo.tm_hour;
   data->lastWater.tm_min = timeinfo.tm_min;
   data->waterInterval = 2;
+  return true;
 }
 
 // en.cppreference.com/c/chrono/time
