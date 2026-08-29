@@ -16,6 +16,7 @@ class MyCallbacks : public BLECharacteristicCallbacks {
     uint8_t *pData = pCharacteristic->getData();
     size_t len = pCharacteristic->getLength();
 
+    //efficiently copies the value received into a buffer
     if (len > 0 && len < sizeof(curr_data.bleBuffer)) {
       memcpy(curr_data.bleBuffer, pData, len);
       curr_data.bleBuffer[len] = '\0';
