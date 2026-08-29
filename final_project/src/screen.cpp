@@ -32,7 +32,13 @@ bool drink_water(Data *data) {
   if (!digitalRead(BTN_R) && (millis() - last_btn_r > DEBOUNCE_DELAY)) {
     while (!digitalRead(BTN_R)) {
     }
+    struct tm timeinfo;
+    if (!getLocalTime(&timeinfo)) {
+      Serial.println("Failed to obtain time");
+      return false;
+    }
     data->water_ct++;
+    data->lastWater.tm_hour = timeinfo.tm_hour;
     digitalWrite(LED_R, HIGH);
     tone(BUZZER, 2048, 500);
     delay(500);
