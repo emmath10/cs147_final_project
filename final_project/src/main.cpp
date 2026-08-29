@@ -44,14 +44,7 @@ void setup() {
   wifiInit();
 
   //initialize and get the time from NTP
-  configTime(GMT_OFFSET_SEC, 0, NTP_SERVER);
-  struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) {
-    Serial.println("Failed to obtain time");
-  }
-  curr_data.lastWater.tm_hour = timeinfo.tm_hour;
-  curr_data.lastWater.tm_min = timeinfo.tm_min;
-  curr_data.waterInterval = 2;
+  initTime(&curr_data);
 
   delay(1000);
 

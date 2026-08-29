@@ -1,6 +1,7 @@
 #ifndef REAL_TIME_H
 #define REAL_TIME_H
 
+#include "data.h"
 #include "iotWifi.h"
 #include <ctime>
 #include <Arduino.h>
@@ -8,6 +9,18 @@
 #define NTP_SERVER "pool.ntp.org"
 #define GMT_OFFSET_SEC -7 * 60 * 60
 #define PREPEND_ZERO(n) n < 10 ? "0" + String(n) : String(n)
+
+inline bool initTime(Data *data) {
+  // initialize and get the time from NTP
+  configTime(GMT_OFFSET_SEC, 0, NTP_SERVER);
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+  }
+  data->lastWater.tm_hour = timeinfo.tm_hour;
+  data->lastWater.tm_min = timeinfo.tm_min;
+  data->waterInterval = 2;
+}
 
 // en.cppreference.com/c/chrono/time
 inline void printLocalTime() {
