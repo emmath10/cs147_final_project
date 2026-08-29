@@ -1,6 +1,7 @@
 #include "ble.h"
 #include "cloud.h"
 #include "data.h"
+#include "iotWifi.h"
 #include "pinout.h"
 #include "realTime.h"
 #include "screen.h"
