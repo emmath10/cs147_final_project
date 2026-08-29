@@ -34,7 +34,7 @@ ___
 4) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal. Buzzer goes off when this screen pops up, and also when you add to your water count.
 ___
 **Water Screen**<br>
-DRINK WATER<br>
-It has been<br>
-2 hours
+DRINK<br>
+WATER
+
 ___
