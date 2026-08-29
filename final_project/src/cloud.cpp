@@ -43,6 +43,7 @@ const String url = "https://" + iothubName + ".azure-devices.net/devices/" +
 uint32_t lastTelemetryTime = 0;
 
 void createPayload(char *buffer, size_t bufferSize, Data * data) {
+  //serializes collected data into a JSON payload
   ArduinoJson::JsonDocument doc;
   //doc["time"] = long(time(NULL));
   doc["tempC"] = data->curr_temp;
@@ -54,9 +55,9 @@ void createPayload(char *buffer, size_t bufferSize, Data * data) {
 }
 
 void sendTelemetry(Data *data) {
-  if (millis() - lastTelemetryTime < TELEMETRY_INTERVAL) {
-    return;
-  }
+  //send only if 3 seconds have passed
+  if (millis() - lastTelemetryTime < TELEMETRY_INTERVAL) { return; }
+  
   // Send telemetry via HTTPS
   char buffer[256];
   createPayload(buffer, 256, data);
