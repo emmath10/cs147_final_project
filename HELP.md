@@ -28,7 +28,8 @@ ___
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALARM<br>
 Wake: 07:00 AM<br>
 Drink: Every 2 Hr(s)<br>
-HELP: tinyurl.com/WellnessClock<br>
+HELP: tinyurl.com/<br>
+WellnessClock<br>
 &nbsp;&nbsp;Middle BTN -> Exit
 ___
 4) Water Alert: Not accessible until your the time you set to drink water runs out. Press the Blue button to let the clock know you hydrated to turn the screen back to normal. Buzzer goes off when this screen pops up, and also when you add to your water count.
